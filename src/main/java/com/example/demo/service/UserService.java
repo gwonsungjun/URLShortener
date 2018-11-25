@@ -21,7 +21,7 @@ public class UserService {
        return makeHateoas(urlInfoRepository.save(requestDto.toEntity()).getId());
     }
 
-    private Map<String, Object> makeHateoas(Long id) {
+    public Map<String, Object> makeHateoas(Long id) {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("url", linkTo(UserController.class).slash(id).toString());
 

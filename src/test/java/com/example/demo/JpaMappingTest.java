@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class UserControllerTest {
+public class JpaMappingTest {
 
     @Autowired
     private UrlInfoRepository repository;
