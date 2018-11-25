@@ -1,16 +1,21 @@
 package com.example.demo.service;
 
 import com.example.demo.controller.UserController;
+import com.example.demo.dto.FindStatisticsResult;
 import com.example.demo.dto.UrlRegistrationRequestDto;
 import com.example.demo.repository.UrlInfoRepository;
+import com.example.demo.repository.VisitsRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
@@ -19,7 +24,9 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 public class UserService {
 
     private UrlInfoRepository urlInfoRepository;
+    private VisitsRepository visitsRepository;
 
+    @Transactional
     public Map<String, Object> saveUrlAndReturnId(UrlRegistrationRequestDto requestDto) {
        return makeHateoas(urlInfoRepository.save(requestDto.toEntity()).getId());
     }
@@ -42,5 +49,15 @@ public class UserService {
         }
 
         return httpHeaders;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> selectStatistics(Long id) {
+        List<Map<String, Object>> resultList = visitsRepository.findVisitStatisticsById(id).collect(Collectors.toList());
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("Stats", resultList);
+
+        return map;
     }
 }
