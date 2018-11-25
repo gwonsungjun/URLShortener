@@ -2,3 +2,6 @@
 POST http://localhost:3000/register.json?url=http://www.vingle.net
 
 ###
+GET http://localhost:3000/1
+
+###
